@@ -144,24 +144,24 @@ describe("Given I am connected as an employee", () => {
  
 //INTEGRATION TESTS - POST
 describe("Given I am connected as Employee on NewBill page, and submit the form", () => {
-beforeEach(() => {
-    jest.spyOn(mockStore, "bills");
+    beforeEach(() => {
+        jest.spyOn(mockStore, "bills");
 
-    Object.defineProperty(window, "localStorage", {
-    value: localStorageMock,
+        Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
+        });
+        window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+            type: "Employee",
+            email: "a@a",
+        })
+        );
+        const root = document.createElement("div");
+        root.setAttribute("id", "root");
+        document.body.append(root);
+        router();
     });
-    window.localStorage.setItem(
-    "user",
-    JSON.stringify({
-        type: "Employee",
-        email: "a@a",
-    })
-    );
-    const root = document.createElement("div");
-    root.setAttribute("id", "root");
-    document.body.append(root);
-    router();
-});
  
    describe("when APi is working well", () => {
     //alors je devrais être envoyé sur la page des factures avec les factures mises à jour

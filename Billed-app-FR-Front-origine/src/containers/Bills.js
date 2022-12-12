@@ -1,31 +1,55 @@
 import { ROUTES_PATH } from '../constants/routes.js'
-import { formatDate, formatStatus } from "../app/format.js"
+import { convertToDate, formatDate, formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
 export default class {
   constructor({ document, onNavigate, store, localStorage }) {
-    this.document = document
-    this.onNavigate = onNavigate
-    this.store = store
-    const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
-    if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
-    const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
-    if (iconEye) iconEye.forEach(icon => {
-      icon.addEventListener('click', () => this.handleClickIconEye(icon))
-    })
-    new Logout({ document, localStorage, onNavigate })
+    this.document = document;
+    this.onNavigate = onNavigate;
+    this.store = store;
+    const buttonNewBill = document.querySelector(
+      `button[data-testid="btn-new-bill"]`
+    );
+    if (buttonNewBill)
+      buttonNewBill.addEventListener("click", this.handleClickNewBill);
+
+    const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`);
+
+    if (iconEye)
+      iconEye.forEach((icon) => {
+        icon.addEventListener("click", () => this.handleClickIconEye(icon));
+      });
+    new Logout({ document, localStorage, onNavigate });
   }
 
   handleClickNewBill = () => {
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
+  // code origine
+  // handleClickIconEye = (icon) => {
+  //   const billUrl = icon.getAttribute("data-bill-url")
+  //   const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
+  //   $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
+  //   $('#modaleFile').modal('show')
+  // }
+
+  // code corrigé
   handleClickIconEye = (icon) => {
-    const billUrl = icon.getAttribute("data-bill-url")
-    const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
-    $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
-    $('#modaleFile').modal('show')
-  }
+    const billUrl = icon.getAttribute("data-bill-url");
+    const isBillNull = billUrl.includes("null");
+    const imgWidth = Math.floor($("#modaleFile").width() * 0.5);
+    // Fix user experience when clicking on eye
+    $("#modaleFile")
+      .find(".modal-body")
+      .html(
+        isBillNull
+          ? `<div style='text-align: center;' class="bill-proof-container"><p>Image non disponible</p></div>`
+          : `<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`
+      );
+    $("#modaleFile").modal("show");
+  };
+
 
   getBills = () => {
     if (this.store) {
@@ -58,3 +82,23 @@ export default class {
     }
   }
 }
+
+// ajout du tri des tickets par date
+/**
+ * Sort copy of bills by date
+ * @param {Array of Object} bills
+ * @returns Array of Object bills
+ */
+export const sortBillsByDate = (bills) => {
+  const billsCopy = [...bills];
+
+  billsCopy.sort((a, b) => {
+      const date1 = convertToDate(a.date);
+      const date2 = convertToDate(b.date);
+
+      if (date1 <= date2) return 1;
+      if (date1 > date2) return -1;
+  });
+
+  return billsCopy;
+};

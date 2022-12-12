@@ -17,3 +17,29 @@ export const formatStatus = (status) => {
       return "Refused"
   }
 }
+
+// ajout pour convertir en date
+const MONTHS_FR = {
+  "Jan.": 0,
+  "Fév.": 1,
+  "Mar.": 2,
+  "Avr.": 3,
+  "Mai.": 4,
+  "Jui.": 5,
+  "Jui.": 6,
+  "Aoû.": 7,
+  "Sep.": 8,
+  "Oct.": 9,
+  "Nov.": 10,
+  "Déc.": 11,
+}
+export const convertToDate = (formatedDate) => {
+
+  let [day, month, year] = formatedDate.split(" ")
+
+  year = parseInt(year)
+  month = MONTHS_FR[month]
+  day = parseInt(day)
+
+  return new Date(year, month, day)
+}

@@ -1,7 +1,9 @@
 import VerticalLayout from './VerticalLayout.js'
 
 export default () => {
-
+    // ajour d'une div message d'erreur
+    // <p class="error-message" data-testid="file-error-message"></p>
+    // ligne 59
   return (`
     <div class='layout'>
       ${VerticalLayout(120)}

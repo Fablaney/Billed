@@ -68,7 +68,7 @@ export default class {
             } catch(e) {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
               // log the error and return unformatted date in that case
-              console.log(e,'for',doc)
+              // console.log(e,'for',doc)
               return {
                 ...doc,
                 date: doc.date,
@@ -76,7 +76,7 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
+          // console.log('length', bills.length)
         return bills
       })
     }
@@ -90,15 +90,15 @@ export default class {
  * @returns Array of Object bills
  */
 export const sortBillsByDate = (bills) => {
-  const billsCopy = [...bills];
+  const billsCopy = [...bills]
 
   billsCopy.sort((a, b) => {
-      const date1 = convertToDate(a.date);
-      const date2 = convertToDate(b.date);
+      const date1 = convertToDate(a.date)
+      const date2 = convertToDate(b.date)
 
-      if (date1 <= date2) return 1;
-      if (date1 > date2) return -1;
-  });
+      if (date1 <= date2) return 1
+      if (date1 > date2) return -1
+  })
 
   return billsCopy;
-};
+}

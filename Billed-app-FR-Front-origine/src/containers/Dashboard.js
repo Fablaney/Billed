@@ -148,28 +148,44 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
-  handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
-    if (this.index === undefined || this.index !== index) this.index = index
-    if (this.counter % 2 === 0) {
-      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
-      $(`#status-bills-container${this.index}`)
-        .html(cards(filteredBills(bills, getStatus(this.index))))
-      this.counter ++
-    } else {
-      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
-      $(`#status-bills-container${this.index}`)
-        .html("")
-      this.counter ++
+    handleShowTickets(e, bills, index)
+    {
+        if (this.counter === undefined || this.index !== index) this.counter = 0
+
+        if (this.index === undefined || this.index !== index) this.index = index
+        
+        if (this.counter % 2 === 0)
+        {
+            $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
+
+            $(`#status-bills-container${this.index}`).html(cards(filteredBills(bills, getStatus(this.index))))
+
+            this.counter ++
+        }
+        else
+        {
+            $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
+
+            $(`#status-bills-container${this.index}`).html("")
+
+            this.counter ++
+        }
+
+        bills.forEach(bill => {
+            // origine
+            // $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+
+            // correction
+            // si open bills.id..data n'est pas celui sur lequel on clique
+            if(!$(`#open-bill${bill.id}`).data("listener"))
+            {
+                $(`#open-bill${bill.id}`).data("listener", true);
+                $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+            }
+        })
+
+        return bills
     }
-
-    bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
-    })
-
-    return bills
-
-  }
 
   getBillsAllUsers = () => {
     if (this.store) {

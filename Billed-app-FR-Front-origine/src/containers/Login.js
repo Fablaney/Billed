@@ -1,4 +1,3 @@
-
 import { ROUTES_PATH } from '../constants/routes.js'
 export let PREVIOUS_LOCATION = ''
 
@@ -41,7 +40,6 @@ export default class Login {
     e.preventDefault()
     const user = {
       type: "Admin",
-      // remplacer employee par admin
       email: e.target.querySelector(`input[data-testid="admin-email-input"]`).value,
       password: e.target.querySelector(`input[data-testid="admin-password-input"]`).value,
       status: "connected"
@@ -60,6 +58,7 @@ export default class Login {
   }
 
   // not need to cover this function by tests
+  /* istanbul ignore next */
   login = (user) => {
     if (this.store) {
       return this.store
@@ -75,6 +74,7 @@ export default class Login {
   }
 
   // not need to cover this function by tests
+  /* istanbul ignore next */
   createUser = (user) => {
     if (this.store) {
       return this.store
@@ -86,7 +86,6 @@ export default class Login {
         password: user.password,
       })})
       .then(() => {
-        // console.log(`User with ${user.email} is created`)
         return this.login(user)
       })
     } else {

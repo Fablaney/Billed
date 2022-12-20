@@ -214,31 +214,41 @@ describe('Given I am connected as Admin, and I am on Dashboard page, and I click
 })
 
 describe('Given I am connected as Admin and I am on Dashboard page and I clicked on a bill', () => {
-  describe('When I click on the icon eye', () => {
-    test('A modal should open', () => {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-      window.localStorage.setItem('user', JSON.stringify({
-        type: 'Admin'
-      }))
-      document.body.innerHTML = DashboardFormUI(bills[0])
-      const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname })
-      }
-      const store = null
-      const dashboard = new Dashboard({
-        document, onNavigate, store, bills, localStorage: window.localStorage
-      })
+    describe('When I click on the icon eye', () => {
 
-      const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
-      const eye = screen.getByTestId('icon-eye-d')
-      eye.addEventListener('click', handleClickIconEye)
-      userEvent.click(eye)
-      expect(handleClickIconEye).toHaveBeenCalled()
+        test('A modal should open', () => {
 
-      const modale = screen.getByTestId('modaleFileAdmin')
-      expect(modale).toBeTruthy()
+            Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+            
+            window.localStorage.setItem('user', JSON.stringify({
+                type: 'Admin'
+            }))
+            document.body.innerHTML = DashboardFormUI(bills[0])
+
+            const onNavigate = (pathname) => {
+                document.body.innerHTML = ROUTES({ pathname })
+            }
+            const store = null
+
+            const dashboard = new Dashboard({
+                document, onNavigate, store, bills, localStorage: window.localStorage
+            })
+
+            const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
+
+            const eye = screen.getByTestId('icon-eye-d')
+
+            eye.addEventListener('click', handleClickIconEye)
+
+            userEvent.click(eye)
+
+            expect(handleClickIconEye).toHaveBeenCalled()
+
+            const modale = screen.getByTestId('modaleFileAdmin')
+
+            expect(modale).toBeTruthy()
+        })
     })
-  })
 })
 
 // test d'intégration GET
